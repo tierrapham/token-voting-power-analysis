@@ -1,0 +1,2 @@
+#Ignore data sets to avoid publishing them to GitHub
+*.csv
