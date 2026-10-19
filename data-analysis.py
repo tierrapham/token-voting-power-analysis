@@ -17,11 +17,30 @@ for file in csv_files:
 # print(data_files)
 # Concatenate all data into one DataFrame
 big_frame = pd.concat (data_files, ignore_index=True)
-print(big_frame)
+#print(big_frame)
 
+# Each row represents...
 # Column 1: Owner
 # Coulmn 2: Choices
 # Column 3: Vote Power
 # Column 4: Percentage
 # Column 5: Proxy Name
 # Column 6: Voted Via
+
+# Next: Determine if an owner appears more than once to determine whether each row in a data set represents one wallet
+
+owners = big_frame["Owner"]
+print(owners)
+
+owner_check = []
+repeat_owners = False
+for owner in owners:
+    if owner not in owner_check:
+        owner_check.append(owner)
+    else:
+        repeat_owners = True
+        break
+if repeat_owners == True:
+    print("There are repeat owners")
+else:
+    print("There arent repeat owners")
