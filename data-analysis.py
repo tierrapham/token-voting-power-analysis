@@ -18,3 +18,10 @@ for file in csv_files:
 # Concatenate all data into one DataFrame
 big_frame = pd.concat (data_files, ignore_index=True)
 print(big_frame)
+
+# Column 1: Owner
+# Coulmn 2: Choices
+# Column 3: Vote Power
+# Column 4: Percentage
+# Column 5: Proxy Name
+# Column 6: Voted Via
