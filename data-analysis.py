@@ -19,7 +19,7 @@ for file in csv_files:
 big_frame = pd.concat (data_files, ignore_index=True)
 #print(big_frame)
 
-# Each row represents...
+# Each row represents a voting record
 # Column 1: Owner
 # Coulmn 2: Choices
 # Column 3: Vote Power
