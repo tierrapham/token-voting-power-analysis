@@ -1,23 +1,10 @@
 import csv
 import pandas as pd
 import glob
+import streamlit as st
 
-path = 'hip_records/*.csv'  # Path to the folder containing CSV files
-# Use glob to get all CSV files in the specified path
-csv_files = glob.glob(path)
-# print(csv_files)
-total_files = len(csv_files)
-# print(total_files)
-data_files = []
-for file in csv_files:
-    # Read each CSV file and adds the information to a new list
-    df = pd.read_csv(file)
-    data_files.append(df)
+hip98 = 'hip_98__mobile_subdao_quality_of_service_requirements_vote_breakdown.csv'
 
-# print(data_files)
-# Concatenate all data into one DataFrame
-big_frame = pd.concat (data_files, ignore_index=True)
-#print(big_frame)
 
 # Each row represents a voting record
 # Column 1: Owner
@@ -27,20 +14,21 @@ big_frame = pd.concat (data_files, ignore_index=True)
 # Column 5: Proxy Name
 # Column 6: Voted Via
 
-# Next: Determine if an owner appears more than once to determine whether each row in a data set represents one wallet
+st.title("Top N Wallet Voting Power Analyzer")
+st.write("Welcome to the Top N Wallet Voting Power Analyzer.")
+st.write("This application will analyze wallet-level voting data, rank wallets according to their voting power, and calculate the percentage of total voting power represented by the top N wallets.")
 
-owners = big_frame["Owner"]
-print(owners)
+st.header("About the Data:")
+st.markdown("""
+Each row represents **one voting record**
+The columns are as follows:
+- *owner* -- The wallet address or the account that cast the vote
+- *choices* -- The voting option selected by the owner
+- *vote power* -- The amount of voting power the owner's vote holds
+- *percentage* -- The percentage of total voting power represented by the owner's vote
+- *proxy name* -- The name of the proxy
+- *voted via* -- The method by which the owner cast the vote
+""")
+st.divider()
 
-owner_check = []
-repeat_owners = False
-for owner in owners:
-    if owner not in owner_check:
-        owner_check.append(owner)
-    else:
-        repeat_owners = True
-        break
-if repeat_owners == True:
-    print("There are repeat owners")
-else:
-    print("There arent repeat owners")
+st.selectbox("Select one:", ["HIP 98", "HIP 101", "HIP 102", "HIP 103", "HIP 104", "HIP 105", "HIP 106", "HIP 107", "HIP 109", "HIP 110", "HIP 112", "HIP 113", "HIP 114", "HIP 116", "HIP 117", "HIP 118", "HIP 119", "HIP 122", "HIP 123", "HIP 124", "HIP 125", "HIP 129", "HIP 130", "HIP 131", "HIP 132", "HIP 133", "HIP 134", "HIP 137", "HIP 138", "HIP 139", "HIP 140", "HIP 141", "HIP 142", "HIP 143", "HIP 144", "HIP 147", "HIP 148", "HIP 149", "HIP 150"])
