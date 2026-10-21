@@ -75,6 +75,12 @@ top_n = st.number_input("Select the number N of top wallets to display:", 1, 100
 df = pd.read_csv(hip_files[hip_selection])
 df["Vote Power"] = df["Vote Power"].str.replace(',', '')
 df["Vote Power"] = pd.to_numeric(df["Vote Power"], errors="coerce")
-df = df.nlargest(top_n, "Vote Power")
 
-st.dataframe(df)
+total_vote_power = df["Vote Power"].sum()
+top_n_df = df.nlargest(top_n, "Vote Power")
+top_n_vote_power = top_n_df["Vote Power"].sum()
+
+top_percent = (top_n_vote_power/total_vote_power)*100
+
+st.dataframe(top_n_df)
+st.write(f"{top_percent:.2f}% of total voting power belongs to the top {top_n} wallets.")
