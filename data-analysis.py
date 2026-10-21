@@ -3,6 +3,7 @@ import pandas as pd
 import glob
 import streamlit as st
 
+# A dictionary to associate each HIP selection with the correct file pathway
 hip_files = {"HIP 98": 'hip_records/hip_98__mobile_subdao_quality_of_service_requirements_vote_breakdown.csv',
              "HIP 101": 'hip_records/hip_101__equalizing_poc_rewards_across_wi-fi_and_cbrs_vote_breakdown.csv',
              "HIP 102": 'hip_records/hip_102__helium_educational_lns_-_unrewarded_trial_network_vote_breakdown.csv',
@@ -52,10 +53,12 @@ hip_files = {"HIP 98": 'hip_records/hip_98__mobile_subdao_quality_of_service_req
 # Column 5: Proxy Name
 # Column 6: Voted Via
 
+# Website title and introduction message
 st.title("Top N Wallet Voting Power Analyzer")
 st.write("Welcome to the Top N Wallet Voting Power Analyzer.")
 st.write("This application will analyze wallet-level voting data, rank wallets according to their voting power, and calculate the percentage of total voting power represented by the top N wallets.")
 
+# Describes the data included in each file to the user
 st.header("About the Data:")
 st.markdown("""
 Each row represents **one voting record**
@@ -67,20 +70,36 @@ The columns are as follows:
 - *proxy name* -- The name of the proxy
 - *voted via* -- The method by which the owner cast the vote
 """)
-st.divider()
+st.divider() # Divides sections on the website
 
-hip_selection = st.selectbox("Select one:", ["HIP 98", "HIP 101", "HIP 102", "HIP 103", "HIP 104", "HIP 105", "HIP 106", "HIP 107", "HIP 109", "HIP 110", "HIP 112", "HIP 113", "HIP 114", "HIP 116", "HIP 117", "HIP 118", "HIP 119", "HIP 122", "HIP 123", "HIP 124", "HIP 125", "HIP 129", "HIP 130", "HIP 131", "HIP 132", "HIP 133", "HIP 134", "HIP 137", "HIP 138", "HIP 139", "HIP 140", "HIP 141", "HIP 142", "HIP 143", "HIP 144", "HIP 147", "HIP 148", "HIP 149", "HIP 150"])
-top_n = st.number_input("Select the number N of top wallets to display:", 1, 100)
 
-df = pd.read_csv(hip_files[hip_selection])
-df["Vote Power"] = df["Vote Power"].str.replace(',', '')
-df["Vote Power"] = pd.to_numeric(df["Vote Power"], errors="coerce")
+st.subheader("Top N Wallets:") # A subheader for the Top N Wallets section
+hip_selection = st.selectbox("Select one:", ["HIP 98", "HIP 101", "HIP 102", "HIP 103", "HIP 104", "HIP 105", "HIP 106", "HIP 107", "HIP 109", "HIP 110", "HIP 112", "HIP 113", "HIP 114", "HIP 116", "HIP 117", "HIP 118", "HIP 119", "HIP 122", "HIP 123", "HIP 124", "HIP 125", "HIP 129", "HIP 130", "HIP 131", "HIP 132", "HIP 133", "HIP 134", "HIP 137", "HIP 138", "HIP 139", "HIP 140", "HIP 141", "HIP 142", "HIP 143", "HIP 144", "HIP 147", "HIP 148", "HIP 149", "HIP 150"]) # Creates a selection box for the user to select the proposal voting data they wish to analyze
+top_n = st.number_input("Select the number N of top wallets to display:", 1, 100) # Creates a number input feature to allow the user to determine the top N wallets for their chosen proposal they wish to analyze
 
-total_vote_power = df["Vote Power"].sum()
-top_n_df = df.nlargest(top_n, "Vote Power")
-top_n_vote_power = top_n_df["Vote Power"].sum()
+df = pd.read_csv(hip_files[hip_selection]) # Reads the HIP file chosen by the user
+df["Vote Power"] = df["Vote Power"].str.replace(',', '') # Replaces the ',' characters in the 'Vote Power' data column with white space (removes them) to allow the data to be converted to numbers and evaluated
+df["Vote Power"] = pd.to_numeric(df["Vote Power"], errors="coerce") # Converts the data in the 'Vote Power' column into numeric values
 
-top_percent = (top_n_vote_power/total_vote_power)*100
+total_vote_power = df["Vote Power"].sum() # Sums the voting power of all owners/voting records
+top_n_df = df.nlargest(top_n, "Vote Power") # Sorts the data from largest to smallest by the 'Vote Power'
+top_n_vote_power = top_n_df["Vote Power"].sum() # Sums the voting power of the top N wallets (chosen by the user)
 
-st.dataframe(top_n_df)
-st.write(f"{top_percent:.2f}% of total voting power belongs to the top {top_n} wallets.")
+top_percent = (top_n_vote_power/total_vote_power)*100 #Determines the total percentage of voting power that belongs to the top N wallets (there is also a 'Percentage' column that is very helpful in simply expressing the percentage of total voting power belonging to each voting record. However, after comparing the two methods (using the sum of the 'Percentage' column; and manually calculating the percentage by summing the top N wallets voting power, the total overall voting power, and dividing the two) it was observed that the two values were not always exact equivalents. It seems that the 'Percentage' column may be filled with pre-rounded decimals causing slight value differences. Therefore, to ensure the most accurate values and findings, the manual calculation method was chosen)
+
+st.dataframe(top_n_df) #Showcase a dataframe visualization of the top N wallets
+
+# Alters the verbage of the total percentage message depending on the number of top wallets chosen by the user
+st.subheader("Top N Voting Power Share:")
+if top_n == 1:
+    st.write(f"{top_percent:.2f}% of total voting power belongs to the top wallet.")
+else:
+    st.write(f"{top_percent:.2f}% of total voting power belongs to the top {top_n} wallets.")
+
+# Not necessarily a part of the project but this is used to determine if there are duplicate owners within data sets
+st.subheader("Duplicate Owner Check:") 
+duplicates = df.duplicated(subset=["Owner"]) # Checks the 'Owner' column for duplicate values and returns booleans, False if it is the first occurence of the owner and True if it has appeared in an earlier row
+
+duplicates = duplicates.replace(False, 'No') # Replaces the boolean values with strings, as it appears that booleans cannot print to/do not appear on the website
+
+st.dataframe(duplicates) #Creates a visualization to allow for easier review of the duplicate analysis information
