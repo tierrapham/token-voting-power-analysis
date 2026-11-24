@@ -19,6 +19,4 @@ def top_n_voting_power (df, top_n):
 
     top_percent = (top_n_vote_power/total_vote_power)*100 #Determines the total percentage of voting power that belongs to the top N wallets (there is also a 'Percentage' column that is very helpful in simply expressing the percentage of total voting power belonging to each voting record. However, after comparing the two methods (using the sum of the 'Percentage' column; and manually calculating the percentage by summing the top N wallets voting power, the total overall voting power, and dividing the two) it was observed that the two values were not always exact equivalents. It seems that the 'Percentage' column may be filled with pre-rounded decimals causing slight value differences. Therefore, to ensure the most accurate values and findings, the manual calculation method was chosen)
 
-    return df
-    return top_n_df
-    return top_percent
+    return df, top_n_df, top_percent
