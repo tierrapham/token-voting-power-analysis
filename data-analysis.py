@@ -14,11 +14,6 @@ df, top_n_df, top_percent = top_n_voting_power (df, top_n)
 display_results(top_n, top_n_df, top_percent)
 
 
-
-
-
-
-
 # # A dictionary to associate each HIP selection with the correct file pathway
 # hip_files = {"HIP 98": 'hip_records/hip_98__mobile_subdao_quality_of_service_requirements_vote_breakdown.csv',
 #              "HIP 101": 'hip_records/hip_101__equalizing_poc_rewards_across_wi-fi_and_cbrs_vote_breakdown.csv',
