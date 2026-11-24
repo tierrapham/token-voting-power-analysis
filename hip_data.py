@@ -49,4 +49,4 @@ def get_files():
 
 def load_selected_data (hip_files, hip_selection):
     df = pd.read_csv(hip_files[hip_selection]) # Reads the HIP file chosen by the user
-    retun df
+    return df
