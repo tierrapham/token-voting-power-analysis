@@ -78,6 +78,9 @@ hip_selection = st.selectbox("Select one:", ["HIP 98", "HIP 101", "HIP 102", "HI
 top_n = st.number_input("Select the number N of top wallets to display:", 1, 100) # Creates a number input feature to allow the user to determine the top N wallets for their chosen proposal they wish to analyze
 
 df = pd.read_csv(hip_files[hip_selection]) # Reads the HIP file chosen by the user
+
+hip_info = pd.read_csv('hip_inventory_70-150.csv')
+
 df["Vote Power"] = df["Vote Power"].str.replace(',', '') # Replaces the ',' characters in the 'Vote Power' data column with white space (removes them) to allow the data to be converted to numbers and evaluated
 df["Vote Power"] = pd.to_numeric(df["Vote Power"], errors="coerce") # Converts the data in the 'Vote Power' column into numeric values
 
@@ -95,6 +98,14 @@ if top_n == 1:
     st.write(f"{top_percent:.2f}% of total voting power belongs to the top wallet.")
 else:
     st.write(f"{top_percent:.2f}% of total voting power belongs to the top {top_n} wallets.")
+
+st.divider() # Divides sections on the website
+
+
+
+
+
+
 
 # Not necessarily a part of the project but this is used to determine if there are duplicate owners within data sets
 st.subheader("Duplicate Owner Check:") 
