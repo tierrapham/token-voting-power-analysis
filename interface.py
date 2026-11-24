@@ -25,8 +25,7 @@ def get_user_selection():
     hip_selection = st.selectbox("Select one:", ["HIP 98", "HIP 101", "HIP 102", "HIP 103", "HIP 104", "HIP 105", "HIP 106", "HIP 107", "HIP 109", "HIP 110", "HIP 112", "HIP 113", "HIP 114", "HIP 116", "HIP 117", "HIP 118", "HIP 119", "HIP 122", "HIP 123", "HIP 124", "HIP 125", "HIP 129", "HIP 130", "HIP 131", "HIP 132", "HIP 133", "HIP 134", "HIP 137", "HIP 138", "HIP 139", "HIP 140", "HIP 141", "HIP 142", "HIP 143", "HIP 144", "HIP 147", "HIP 148", "HIP 149", "HIP 150"]) # Creates a selection box for the user to select the proposal voting data they wish to analyze
     top_n = st.number_input("Select the number N of top wallets to display:", 1, 100) # Creates a number input feature to allow the user to determine the top N wallets for their chosen proposal they wish to analyze
 
-    return hip_selection
-    return top_n
+    return hip_selection, top_n
 
 def display_results(top_n, top_n_df, top_percent):
     st.dataframe(top_n_df) #Showcase a dataframe visualization of the top N wallets
