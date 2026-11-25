@@ -49,3 +49,7 @@ def get_files():
 def load_selected_data (hip_files, hip_selection):
     df = pd.read_csv(hip_files[hip_selection]) # Reads the HIP file chosen by the user
     return df
+
+def load_hip_data():
+    hip_df = pd.read_csv('hip_inventory_70-150.csv')
+    return hip_df
